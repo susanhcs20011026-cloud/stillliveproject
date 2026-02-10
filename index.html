@@ -1,186 +1,129 @@
+<!--
+Reference & Process Note:
+The moka pot in this composition was inspired by a CSS illustration by Ivor Jetski on CodePen:
+https://codepen.io/ivorjetski/pen/yLGQYJo
+I referenced this work primarily for its geometric breakdown of the moka pot form and its use of
+basic CSS shapes (such as polygons, gradients, and layered divs) to suggest a three-dimensional
+object. Rather than copying the original implementation, I reinterpreted the structure by
+redesigning the proportions, color palette, and component hierarchy to better fit the visual
+language of my poster.
+-->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-
 <style>
-/* ============ GLOBAL ============ */
-* { box-sizing: border-box; }
+  * { box-sizing: border-box; }
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
-}
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
 
-/* ============ FRAME + NEON BORDER ============ */
-
-/* --- 画布容器（带霓虹渐变流动边框） --- */
   .frame {
     position: relative;
     width: 500px;
     height: 500px;
+    border: 1px dashed #333;
     background-color: #ffffff;
     overflow: hidden;
     perspective: 1000px;
-    /* 留出内边距给渐变背景，作为边框厚度 */
-    padding: 6px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px; /* 可选：稍微圆润一点更像霓虹灯 */
   }
 
-  /* 霓虹渐变背景层 */
-  .frame::before {
+  /* --- yellow-coffee-can --- */
+  .can {
+    position: absolute;
+    width: 180px;
+    height: 260px;
+    border: 3px solid #222;
+    background: linear-gradient(to right, #f2c100 0%, #ffcc00 20%, #ffcc00 80%, #d9ac00 100%);
+  }
+
+  .can::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* 你的霓虹色渐变 */
-    background: linear-gradient(90deg, #fbc2eb, #a6c1ee, #ff9a9e, #a6c1ee, #fbc2eb);
-    background-size: 300% 100%;
-    animation: flowing-border 6s linear infinite;
-    z-index: 0;
+    top: -15px;
+    left: -3px;
+    width: calc(100% + 6px);
+    height: 30px;
+    background: #ffe066;
+    border: 3px solid #222;
+    border-radius: 50%;
   }
 
-  /* 内部白色衬底（覆盖在渐变之上，露出边角作为边框） */
-  .frame::after {
-    content: '';
+  .label-content {
+    padding-top: 45px;
+    text-align: center;
+    font-family: "Arial Black", sans-serif;
+  }
+
+  .title {
+    font-size: 34px;
+    line-height: 0.8;
+    color: #1a4a9e;
+    margin: 0;
+  }
+
+  .red-bar {
     position: absolute;
-    top: 6px; left: 6px; right: 6px; bottom: 6px;
-    background: white;
-    z-index: 0;
-  }
-
-  /* 确保内部所有元素都在白色衬底之上 */
-  .frame > div {
-    z-index: 1;
-  }
-
-  /* 渐变流动动画 */
-  @keyframes flowing-border {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-  }
-/* ============ YELLOW COFFEE CAN ============ */
-
-.can {
-  position: absolute;
-  width: 180px;
-  height: 260px;
-  border: 3px solid #222;
-  background: linear-gradient(
-    to right,
-    #f2c100 0%,
-    #ffcc00 20%,
-    #ffcc00 80%,
-    #d9ac00 100%
-  );
-}
-
-.can::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: -3px;
-  width: calc(100% + 6px);
-  height: 30px;
-  background: #ffe066;
-  border: 3px solid #222;
-  border-radius: 50%;
-}
-
-.label-content {
-  padding-top: 45px;
-  text-align: center;
-  font-family: "Arial Black", sans-serif;
-}
-
-.title {
-  font-size: 34px;
-  line-height: 0.8;
-  color: #1a4a9e;
-  margin: 0;
-}
-
-.red-bar {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  height: 70px;
-  background-color: #d32f2f;
-  border-top: 3px solid #222;
-  border-bottom: 3px solid #222;
+    bottom: 0px;
+    width: 100%;
+    height: 70px;
+    background-color: #d32f2f;
+    border-top: 3px solid #222;
+    border-bottom: 3px solid #222;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-.red-bar span {
+  .red-bar span {
   font-family: "Arial Black", sans-serif;
   font-size: 18px;
   color: #ffffff;
   letter-spacing: 1px;
 }
 
-.can.back {
-  bottom: 40px;
-  left: 20px;
-  z-index: 1;
-  transform: scale(0.9);
-  filter: brightness(0.95);
-}
+  .can.back { bottom: 40px; left: 20px; z-index: 1; transform: scale(0.9); filter: brightness(0.95); }
+  .can.front { bottom: 0px; left: 80px; z-index: 3; box-shadow: -10px 0 20px rgba(0,0,0,0.1); }
+  
 
-.can.front {
-  bottom: 0px;
-  left: 80px;
-  z-index: 3;
-  box-shadow: -10px 0 20px rgba(0,0,0,0.1);
-}
+  /* --- Coffee mug --- */
+  .cup-container {
+    position: absolute;
+    bottom: 265px; 
+    left: 45px;
+    width: 120px; 
+    height: 120px;
+    z-index: 2;
+    transform: rotate(-3deg);
+  }
 
-/* ============ COFFEE CUP ============ */
+  .cup-body {
+    position: absolute;
+    width: 75px;
+    height: 90px;
+    background: repeating-linear-gradient(to bottom, #1a4a9e 0px, #1a4a9e 18px, white 18px, white 36px);
+    border: 3px solid #222;
+    border-radius: 2px 2px 18px 18px;
+    z-index: 2;
+  }
 
-.cup-container {
-  position: absolute;
-  bottom: 265px;
-  left: 45px;
-  width: 120px;
-  height: 120px;
-  z-index: 2;
-  transform: rotate(-3deg);
-}
+  .cup-top {
+    position: absolute;
+    top: -12px;
+    width: 75px;
+    height: 24px;
+    background: #fff;
+    border: 3px solid #222;
+    border-radius: 50%;
+    z-index: 3;
+  }
 
-.cup-body {
-  position: absolute;
-  width: 75px;
-  height: 90px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #1a4a9e 0px,
-    #1a4a9e 18px,
-    white 18px,
-    white 36px
-  );
-  border: 3px solid #222;
-  border-radius: 2px 2px 18px 18px;
-  z-index: 2;
-}
-
-.cup-top {
-  position: absolute;
-  top: -12px;
-  width: 75px;
-  height: 24px;
-  background: #fff;
-  border: 3px solid #222;
-  border-radius: 50%;
-  z-index: 3;
-}
-
-.cup-handle {
+ .cup-handle {
   position: absolute;
   top: 15px;
   left: 55px;
@@ -194,8 +137,7 @@ body {
     35% 25%, 0% 30%
   );
 }
-
-.cup-handle::after {
+  .cup-handle::after {
   content: "";
   position: absolute;
   top: 6px;
@@ -203,149 +145,87 @@ body {
   width: 33px;
   height: 48px;
   background: #ffffff;
-  clip-path: inherit;
-}
-
-/* ============ MOKA POT ============ */
-
-.moka-pot {
-  position: absolute;
-  bottom: 0px;
-  right: 30px;
-  width: 200px;
-  height: 320px;
-  z-index: 4;
-  transform: scale(1.08);
-  transform-origin: bottom center;
-}
-
-.moka-knob {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 12px;
-  background: #222;
-  border-radius: 4px 4px 2px 2px;
-}
-
-.moka-lid {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 110px;
-  height: 45px;
-  background: linear-gradient(
-    90deg,
-    #e67e22 0%,
-    #ff9f43 45%,
-    #ffb167 55%,
-    #d35400 100%
-  );
-  border: 2px solid #222;
-  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
-}
-
-.moka-spout {
-  position: absolute;
-  top: 65px;
-  right: 25px;
-  width: 50px;
-  height: 60px;
-  background: #ff9f43;
-  border: 2px solid #222;
-  clip-path: polygon(0% 0%, 100% 30%, 0% 80%);
-}
-
-.moka-body-upper {
-  position: absolute;
-  top: 55px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 125px;
-  height: 120px;
-  background: linear-gradient(
-    90deg,
-    #d35400 0%,
-    #ff9f43 40%,
-    #ffb167 50%,
-    #e67e22 100%
-  );
-  border: 2px solid #222;
-  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
-}
-
-.moka-waist {
-  position: absolute;
-  top: 173px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 65px;
-  height: 16px;
-  background: #34495e;
-  border: 2px solid #222;
-}
-
-.moka-body-lower {
-  position: absolute;
-  top: 187px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 130px;
-  height: 110px;
-  background: linear-gradient(
-    90deg,
-    #7f8c8d 0%,
-    #bdc3c7 45%,
-    #ecf0f1 55%,
-    #95a5a6 100%
-  );
-  border: 2px solid #222;
-  clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);
-}
-
-.moka-handle {
-  position: absolute;
-  top: 85px;
-  left: 10px;
-  width: 45px;
-  height: 100px;
-  background: #222;
   clip-path: polygon(
-    100% 15%, 80% 10%, 40% 10%, 20% 20%,
-    10% 40%, 25% 60%, 15% 85%, 35% 95%,
-    100% 85%, 100% 75%, 55% 75%, 45% 55%,
-    55% 25%, 100% 25%
+    0% 15%, 40% 5%, 80% 15%, 100% 35%,
+    100% 65%, 80% 85%, 40% 95%, 0% 85%,
+    0% 70%, 35% 75%, 65% 65%, 65% 35%,
+    35% 25%, 0% 30%
   );
 }
 
-.moka-shadow {
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 140px;
-  height: 15px;
-  background: rgba(0,0,0,0.1);
-  border-radius: 50%;
-  filter: blur(4px);
-}
+  /* --- moka pot --- */
+  .moka-pot {
+    position: absolute;
+    bottom: 0px; 
+    right: 30px; 
+    width: 200px;
+    height: 320px;
+    z-index: 4;
+    transform: scale(1.08); 
+    transform-origin: bottom center;
+  }
 
-/* ============ FOLDED STRIPED CUPS ============ */
+  .moka-knob {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 24px; height: 12px; background: #222; border-radius: 4px 4px 2px 2px; z-index: 6;
+  }
+
+  .moka-lid {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 45px;
+    background: linear-gradient(90deg, #e67e22 0%, #ff9f43 45%, #ffb167 55%, #d35400 100%);
+    border: 2px solid #222; clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%); z-index: 5;
+  }
+
+  .moka-spout {
+    position: absolute; top: 65px; right: 25px; width: 50px; height: 60px;
+    background: #ff9f43; border: 2px solid #222; clip-path: polygon(0% 0%, 100% 30%, 0% 80%); z-index: 3;
+  }
+
+  .moka-body-upper {
+    position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
+    width: 125px; height: 120px;
+    background: linear-gradient(90deg, #d35400 0%, #ff9f43 40%, #ffb167 50%, #e67e22 100%);
+    border: 2px solid #222; clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); z-index: 4;
+  }
+
+  .moka-waist {
+    position: absolute; top: 173px; left: 50%; transform: translateX(-50%);
+    width: 65px; height: 16px; background: #34495e; border: 2px solid #222; z-index: 5;
+  }
+
+  .moka-body-lower {
+    position: absolute; top: 187px; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 110px;
+    background: linear-gradient(90deg, #7f8c8d 0%, #bdc3c7 45%, #ecf0f1 55%, #95a5a6 100%);
+    border: 2px solid #222; clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%); z-index: 4;
+  }
+
+  .moka-handle {
+    position: absolute; top: 85px; left: 10px; width: 45px; height: 100px; background: #222;
+    clip-path: polygon(100% 15%, 80% 10%, 40% 10%, 20% 20%, 10% 40%, 25% 60%, 15% 85%, 35% 95%, 100% 85%, 100% 75%, 55% 75%, 45% 55%, 55% 25%, 100% 25%);
+    z-index: 2;
+  }
+
+  .moka-shadow {
+    position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+    width: 140px; height: 15px; background: rgba(0,0,0,0.1); border-radius: 50%; filter: blur(4px); z-index: 1;
+  }
+/* ===== folded mugs ===== */
 
 .striped-cups {
   position: absolute;
   bottom: 40px;
-  left: 265px;
+  left: 265px;   
   width: 80px;
   height: 160px;
-  z-index: 2;
+  z-index: 2;    
 }
 
+/* Striped cup body */
 .cup-split {
   position: absolute;
+  left: 0;
   width: 80px;
   height: 80px;
   background: repeating-linear-gradient(
@@ -359,17 +239,20 @@ body {
   overflow: hidden;
 }
 
+/* upper cup */
 .cup-split.top {
   top: 0;
   border-radius: 18px 18px 10px 10px;
 }
 
+/* bottom cup） */
 .cup-split.bottom {
-  top: 60px;
-  background-position: 0 -36px;
+  top: 60px;                    
+  background-position: 0 -36px; 
   border-radius: 10px 10px 18px 18px;
 }
 
+/* white edge of cup */
 .cup-split::before {
   content: "";
   position: absolute;
@@ -381,19 +264,13 @@ body {
   border: 3px solid #222;
   border-radius: 50%;
 }
+
 </style>
 </head>
-
 <body>
 
 <div class="frame">
-
-  <div class="can back">
-    <div class="label-content">
-      <h1 class="title">CAFÉ<br>BUSTELO</h1>
-    </div>
-    <div class="red-bar"></div>
-  </div>
+  <div class="can back"><div class="label-content"><h1 class="title">CAFÉ<br>BUSTELO</h1></div><div class="red-bar"></div></div>
 
   <div class="cup-container">
     <div class="cup-top"></div>
@@ -402,13 +279,15 @@ body {
   </div>
 
   <div class="can front">
-    <div class="label-content">
-      <h1 class="title">CAFÉ<br>BUSTELO</h1>
-    </div>
-    <div class="red-bar">
-      <span>283g</span>
-    </div>
+  <div class="label-content">
+    <h1 class="title">CAFÉ<br>BUSTELO</h1>
   </div>
+
+  <div class="red-bar">
+    <span class="weight">283g</span>
+  </div>
+</div>
+
 
   <div class="moka-pot">
     <div class="moka-knob"></div>
@@ -420,12 +299,10 @@ body {
     <div class="moka-handle"></div>
     <div class="moka-shadow"></div>
   </div>
-
   <div class="striped-cups">
-    <div class="cup-split top"></div>
-    <div class="cup-split bottom"></div>
-  </div>
-
+  <div class="cup-split top"></div>
+  <div class="cup-split bottom"></div>
+</div>
 </div>
 
 </body>
